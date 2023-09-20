@@ -9,17 +9,22 @@
 import React from "react";
 import type { Node } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import ContactsNativeModule from "./ContactsLoader";
 
 const App: () => Node = () => {
 
-  function getContactsClick() {
+  const getContactsClick = () => {
     console.log("点击获取联系人");
+    console.log(`点击获取联系人:${ContactsNativeModule}`);
+    ContactsNativeModule.getContactsMethod("data to native", (result) => {
+      console.log("Received from native:", result);
+    });
   }
 
   return (
     <View style={ styles.container }>
       <Text style={ styles.title }>ReactNative获取通讯录</Text>
-      <Button title={ "获取联系人" } onPress={ getContactsClick } />
+      <Button title={ "获取联系人" } onPress={ () => getContactsClick() } />
     </View>
   );
 };
