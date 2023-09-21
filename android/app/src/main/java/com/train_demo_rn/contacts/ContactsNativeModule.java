@@ -22,14 +22,22 @@ public class ContactsNativeModule extends ReactContextBaseJavaModule {
         return "ContactsNativeModule"; // 这里是模块的名称，稍后将用于 JavaScript 端的调用
     }
 
+
     @ReactMethod
     public void getContactsMethod(String message, Callback callback) {
         // 在这里处理 JavaScript 调用，并执行原生代码
         Log.e("getContactsMethod", "RN回调到原生端--" + message);
-      ArrayList<ContactModel> contactsList = ContactsPhoneUtils.INSTANCE.getContactsList(getCurrentActivity());
+        ArrayList<ContactModel> contactsList = ContactsPhoneUtils.INSTANCE.getContactsList(getCurrentActivity());
         Gson gson = new Gson();
         String contactsListStr = gson.toJson(contactsList);
         Log.e("getContactsMethod", "contactsListStr:" + contactsListStr);
         callback.invoke(contactsListStr);
+    }
+
+
+    @ReactMethod
+    public void callTelephone(String contactNumber) {
+        Log.e("callTelephone", "RN端调用原生端拨打电话：" + contactNumber);
+        ContactsPhoneUtils.INSTANCE.callTelephone(getCurrentActivity(), contactNumber);
     }
 }
